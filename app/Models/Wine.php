@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Vine extends Model
+class Wine extends Model
 {
     protected $fillable = ['name', 'style', 'sort', 'price', 'stock_qty'];
 
@@ -18,14 +17,8 @@ class Vine extends Model
         );
     }
 
-    public function vineImages(): HasMany
+    public function wineImages(): HasMany
     {
-        return $this->hasMany(VineImage::class);
-    }
-
-    public function mainImage(): HasOne
-    {
-        // or use some `order` column, if it did exist
-        return $this->hasOne(VineImage::class)->latestOfMany();
+        return $this->hasMany(WineImage::class);
     }
 }

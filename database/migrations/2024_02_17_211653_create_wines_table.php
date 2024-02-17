@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('vine_images', function (Blueprint $table) {
+        Schema::create('wines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vine_id');
-            $table->string('image');
-            $table->foreign('vine_id')
-                ->references('id')->on('vines')
-                ->cascadeOnDelete();
+            $table->string('name');
+            $table->string('style');
+            $table->string('sort');
+            $table->unsignedBigInteger('price');
+            $table->unsignedInteger('stock_qty');
             $table->timestamps();
         });
     }
