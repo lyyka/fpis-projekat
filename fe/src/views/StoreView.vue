@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Header from "@/components/Header.vue";
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, watch} from "vue";
 import Filters from "@/app/filters";
 import AppService from '@/app';
 
@@ -29,8 +29,19 @@ const removeWine = async (id: number) => {
     state.order = (await (await appService.removeFromOrder(id, state.order)).json()).data
 }
 
+const loadWines = async (filters: Filters) => {
+    console.log(filters);
+    state.wines = (await (await appService.getWines(filters)).json()).data;
+}
+
+watch(
+    () => state.filters,
+    loadWines,
+    {deep: true}
+)
+
 onMounted(async () => {
-    state.wines = (await (await appService.getWines(state.filters)).json()).data;
+    await loadWines(state.filters);
     state.styles = await (await appService.getStyles()).json();
     state.sorts = await (await appService.getSorts()).json();
 });
@@ -49,8 +60,9 @@ onMounted(async () => {
                         <div class="tw-flex tw-flex-col tw-gap-2">
                             <label v-for="sort in state.sorts" class="tw-flex tw-gap-2">
                                 <input type="checkbox"
-                                       :value="sort"/>
-                                <span v-text="sort"></span>
+                                       :value="sort"
+                                       v-model="state.filters.sort"/>
+                                <span>{{ sort }}</span>
                             </label>
                         </div>
                     </div>
@@ -60,21 +72,22 @@ onMounted(async () => {
                         <div class="tw-flex tw-flex-col tw-gap-2">
                             <label v-for="style in state.styles" class="tw-flex tw-gap-2">
                                 <input type="checkbox"
-                                       :value="style"/>
-                                <span v-text="style"></span>
+                                       :value="style"
+                                       v-model="state.filters.style"/>
+                                <span>{{ style }}</span>
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="tw-col-span-6 tw-px-4 tw-pt-4">
-                <h1 class="tw-text-3xl tw-text-red-600">Prodavnica</h1>
+                <h1 class="tw-text-3xl tw-text-red-600 tw-mb-4">Prodavnica</h1>
                 <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                     <div v-for="wine in state.wines">
                         <img :src="wine.images[0]?.image" alt="wine image"
-                             class="tw-h-64 tw-rounded-tl tw-rounded-tr tw-object-scale-down">
+                             class="tw-h-64 tw-w-full tw-rounded-tl tw-rounded-tr tw-object-cover tw-object-top">
                         <div class="tw-bg-white tw-rounded-bl tw-rounded-br tw-border tw-p-4">
-                            <p>{{ wine.name }}</p>
+                            <p class="tw-font-bold">{{ wine.name }}</p>
                             <p>{{ wine.price }} RSD</p>
                             <button type="button"
                                     @click="addWine(wine.id)"
@@ -86,26 +99,29 @@ onMounted(async () => {
                 </div>
             </div>
             <div class="tw-col-span-3 tw-border-l tw-px-4 tw-pt-4">
-                <p class="tw-text-2xl">Korpa</p>
+                <p class="tw-text-2xl tw-mb-4">Korpa</p>
 
                 <p v-if="!state.order" class="tw-text-slate-400">Korpa je prazna</p>
 
                 <div class="tw-flex tw-flex-col tw-gap-4">
-                    <div v-for="item in state.order?.items ?? []">
-                        <div class="tw-flex tw-gap-2">
-                            <img :src="item.wine.images[0]?.image" alt="wine image" class="tw-h-32"/>
+                    <div v-for="item in state.order?.items ?? []" class="tw-overflow-y-auto">
+                        <div class="tw-flex tw-gap-4">
+                            <img :src="item.wine.images[0]?.image" alt="wine image"
+                                 class="tw-h-32 tw-w-32 tw-object-cover tw-object-top"/>
                             <div>
-                                <p>{{ item.wine.name }}</p>
+                                <p class="tw-font-bold">{{ item.wine.name }}</p>
                                 <p>{{ item.wine.price }} RSD</p>
-                                <hr/>
-                                <div class="tw-flex tw-gap-2">
+                                <div class="tw-flex tw-gap-2 tw-mt-2 tw-pt-2 tw-border-t">
                                     <p>{{ item.qty }} qty</p>
-                                    <button @click="addWine(item.wine.id)" class="tw-bg-red-200 tw-p-1 tw-rounded"
-                                            type="button">+
-                                    </button>
-                                    <button @click="removeWine(item.wine.id)" class="tw-bg-slate-200 tw-p-1 tw-rounded"
-                                            type="button">-
-                                    </button>
+                                    <div>
+                                        <button @click="addWine(item.wine.id)" class="tw-bg-red-200 tw-px-2 tw-py-1"
+                                                type="button">+
+                                        </button>
+                                        <button @click="removeWine(item.wine.id)"
+                                                class="tw-bg-slate-200 tw-px-2 tw-py-1"
+                                                type="button">-
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

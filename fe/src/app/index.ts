@@ -29,6 +29,7 @@ export default class AppService {
     public getWines(filters: Filters): Promise<Object> {
         const parameterizeArray = (key: string, arr: Array<string> | null) => {
             if (!arr) return '';
+            if (arr.length === 0) return '';
             arr = arr.map(encodeURIComponent)
             return key + '[]=' + arr.join('&' + key + '[]=')
         }
