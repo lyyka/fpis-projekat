@@ -13,7 +13,7 @@ class WineSortController extends Controller
     {
         $style = $request->input('style');
         return response()->json(
-            $style ? Wine::whereIn('style', $style)->pluck('sort')->all() : WineSort::cases()
+            $style ? Wine::whereIn('style', $style)->select(['sort'])->distinct()->pluck('sort')->all() : WineSort::cases()
         );
     }
 }
