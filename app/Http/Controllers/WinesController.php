@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class WinesController extends Controller
 {
-    public function __invoke(WineIndexRequest $request): JsonResource
+    public function index(WineIndexRequest $request): JsonResource
     {
         return WineResource::collection(
             Wine::query()

@@ -17,7 +17,6 @@ class WineResource extends JsonResource
             'style' => $this->style,
             'sort' => $this->sort,
             'price' => $this->price_real,
-            'stock_qty' => $this->stock_qty,
             'images' => WineImageResource::collection($this->whenLoaded('wineImages')),
         ];
     }

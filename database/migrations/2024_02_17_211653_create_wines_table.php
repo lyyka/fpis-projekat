@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->string('style');
             $table->string('sort');
             $table->unsignedBigInteger('price');
-            $table->unsignedInteger('stock_qty');
             $table->timestamps();
         });
     }

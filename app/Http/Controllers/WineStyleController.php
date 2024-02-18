@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class WineStyleController extends Controller
 {
-    public function __invoke(WineIndexRequest $request): JsonResponse
+    public function index(WineIndexRequest $request): JsonResponse
     {
         $sort = $request->input('sort');
         return response()->json(

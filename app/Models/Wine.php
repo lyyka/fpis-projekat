@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wine extends Model
 {
-    protected $fillable = ['name', 'style', 'sort', 'price', 'stock_qty'];
+    protected $fillable = ['name', 'style', 'sort', 'price'];
 
     public function priceReal(): Attribute
     {
