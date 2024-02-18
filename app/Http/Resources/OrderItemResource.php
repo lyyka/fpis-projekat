@@ -13,7 +13,7 @@ class OrderItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'wine' => WineResource::collection($this->whenLoaded('wine')),
+            'wine' => WineResource::make($this->whenLoaded('wine')),
             'qty' => $this->qty,
         ];
     }

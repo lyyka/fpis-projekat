@@ -17,6 +17,7 @@ host_db_port: "3308"
 use_dns_when_possible: true
 composer_version: "2"
 web_environment: [ ]
+disable_settings_management: true
 hooks:
   post-start:
     - exec: mysql -u root -proot -hdb -e "CREATE DATABASE IF NOT EXISTS fpis_lr_20233015;"

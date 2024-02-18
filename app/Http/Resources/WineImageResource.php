@@ -12,7 +12,7 @@ class WineImageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'image' => $this->image,
+            'image' => config('app.url') . "/storage/wine_images/$this->image",
         ];
     }
 }

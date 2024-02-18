@@ -13,7 +13,7 @@ class Wine extends Model
     public function priceReal(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->price * 100
+            get: fn() => $this->price / 100
         );
     }
 
