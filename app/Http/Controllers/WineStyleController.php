@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Enums\WineStyle;
+use App\Http\Requests\WineIndexRequest;
+use App\Models\Wine;
 use Illuminate\Http\JsonResponse;
 
 class WineStyleController extends Controller
 {
-    public function __invoke(): JsonResponse
+    public function __invoke(WineIndexRequest $request): JsonResponse
     {
-        return response()->json(WineStyle::cases());
+        $sort = $request->input('sort');
+        return response()->json(
+            $sort ? Wine::whereIn('sort', $sort)->pluck('style')->all() : WineStyle::cases()
+        );
     }
 }

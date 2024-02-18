@@ -30,20 +30,31 @@ const removeWine = async (id: number) => {
 }
 
 const loadWines = async (filters: Filters) => {
-    console.log(filters);
     state.wines = (await (await appService.getWines(filters)).json()).data;
+}
+
+const loadStyles = async (filters: Filters) => {
+    state.styles = await (await appService.getStyles(filters)).json();
+}
+
+const loadSorts = async (filters: Filters) => {
+    state.sorts = await (await appService.getSorts(filters)).json();
 }
 
 watch(
     () => state.filters,
-    loadWines,
+    (filters) => {
+        loadWines(filters);
+        loadStyles(filters);
+        loadSorts(filters);
+    },
     {deep: true}
 )
 
-onMounted(async () => {
-    await loadWines(state.filters);
-    state.styles = await (await appService.getStyles()).json();
-    state.sorts = await (await appService.getSorts()).json();
+onMounted(() => {
+    loadWines(state.filters);
+    loadStyles(state.filters);
+    loadSorts(state.filters);
 });
 </script>
 
