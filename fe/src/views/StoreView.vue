@@ -99,6 +99,7 @@ onMounted(() => {
                              class="tw-h-64 tw-w-full tw-rounded-tl tw-rounded-tr tw-object-cover tw-object-top">
                         <div class="tw-bg-white tw-rounded-bl tw-rounded-br tw-border tw-p-4">
                             <p class="tw-font-bold">{{ wine.name }}</p>
+                            <p>{{ wine.sort }} / {{ wine.style }}</p>
                             <p>{{ wine.price }} RSD</p>
                             <button type="button"
                                     @click="addWine(wine.id)"
